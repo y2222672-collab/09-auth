@@ -1,0 +1,20 @@
+.sidebar {
+  width: 250px;
+  background-color: #2c2c2c;
+  color: white;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ddd;
+}
+
+.container {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.notesWrapper {
+  width: 100%;
+  padding: 0;
+}
