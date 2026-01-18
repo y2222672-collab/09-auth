@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
-import { fetchNotes } from "@/lib/api";
+
 import { NoteTag } from "@/types/note";
 import FilteredNotesClient from "./Notes.client";
 import { Metadata } from "next";
@@ -30,7 +25,6 @@ export async function generateMetadata({
     },
   };
 }
-
 export default async function FilterPage({ params }: PageProps) {
   const { slug } = await params;
   const tagFromUrl = slug[0];
@@ -39,22 +33,13 @@ export default async function FilterPage({ params }: PageProps) {
     | NoteTag
     | undefined;
 
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: ["notes", 1, activeTag, ""],
-    queryFn: () => fetchNotes({ page: 1, tag: activeTag, search: "" }),
-  });
-
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <main style={{ padding: "0 20px" }}>
-        <h1 style={{ fontSize: "24px", margin: "20px 0" }}>
-          Notes: {tagFromUrl === "all" ? "All" : tagFromUrl}
-        </h1>
+    <main style={{ padding: "0 20px" }}>
+      <h1 style={{ fontSize: "24px", margin: "20px 0" }}>
+        Notes: {tagFromUrl === "all" ? "All" : tagFromUrl}
+      </h1>
 
-        <FilteredNotesClient activeTag={activeTag} />
-      </main>
-    </HydrationBoundary>
+      <FilteredNotesClient activeTag={activeTag} />
+    </main>
   );
 }

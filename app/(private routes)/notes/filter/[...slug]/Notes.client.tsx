@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
-import { fetchNotes } from "@/lib/api";
+import { fetchNotes } from "@/lib/api/clientApi";
 import { NoteTag } from "@/types/note";
+import { useAuthStore } from "@/lib/store/authStore";
 import css from "../../NotesPage.module.css";
 
 import SearchBox from "@/components/SearchBox/SearchBox";
@@ -23,6 +24,8 @@ export default function FilteredNotesClient({ activeTag }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [debouncedSearch] = useDebounce(search, 500);
 
+  const { isAuthenticated } = useAuthStore();
+
   const { data, isFetching, isError } = useQuery({
     queryKey: ["notes", page, activeTag, debouncedSearch],
     queryFn: () =>
@@ -32,6 +35,7 @@ export default function FilteredNotesClient({ activeTag }: NotesClientProps) {
         search: debouncedSearch,
       }),
     placeholderData: keepPreviousData,
+    enabled: isAuthenticated,
   });
 
   const handleSearchChange = (value: string) => {
@@ -49,7 +53,7 @@ export default function FilteredNotesClient({ activeTag }: NotesClientProps) {
         </Link>
       </header>
 
-      {isFetching && !data && (
+      {isFetching && !data && isAuthenticated && (
         <div className={css.loaderContainer}>
           <Loader />
         </div>
@@ -62,7 +66,8 @@ export default function FilteredNotesClient({ activeTag }: NotesClientProps) {
       {data && data.notes.length > 0 ? (
         <NoteList notes={data.notes} />
       ) : (
-        !isFetching && <p className={css.empty}>No notes found.</p>
+        !isFetching &&
+        isAuthenticated && <p className={css.empty}>No notes found.</p>
       )}
 
       {data && data.totalPages > 1 && (
