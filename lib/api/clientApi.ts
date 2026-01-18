@@ -1,38 +1,15 @@
 import { api } from "./api";
 import { User } from "@/types/user";
 import { NoteTag } from "@/types/note";
-
-export interface Note {
-  id: string;
-  title: string;
-  content: string;
-  tag: NoteTag;
-}
-
-export interface FetchNotesResponse {
-  notes: Note[];
-  totalPages: number;
-}
-
-export interface FetchNotesParams {
-  search?: string;
-  page?: number;
-  perPage?: number;
-  tag?: NoteTag;
-}
-
+import {
+  Note,
+  FetchNotesParams,
+  FetchNotesResponse,
+  LoginCredentials,
+  RegisterCredentials,
+} from "@/types/note";
 interface AuthResponse {
   user: User;
-}
-
-interface RegisterCredentials {
-  email: string;
-  password: string;
-}
-
-interface LoginCredentials {
-  email: string;
-  password: string;
 }
 
 // --- Функції API ---
@@ -90,5 +67,9 @@ export const updateMe = async (userData: {
   username: string;
 }): Promise<User> => {
   const { data } = await api.patch<User>("/users/me", userData);
+  return data;
+};
+export const getMe = async (): Promise<User> => {
+  const { data } = await api.get<User>("/users/me");
   return data;
 };

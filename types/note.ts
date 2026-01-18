@@ -21,7 +21,18 @@ export interface FetchNotesResponse {
 }
 
 export interface FetchNotesParams {
-  page: number;
-  tag?: NoteTag;
   search?: string;
+  page?: number;
+  perPage?: number;
+  tag?: string;
+}
+
+export interface RegisterCredentials {
+  email: string;
+  password: string;
+}
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
 }
