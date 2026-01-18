@@ -58,13 +58,16 @@ export default function EditProfilePage() {
         <h1 className={css.formTitle}>Edit Profile</h1>
 
         <Image
-          src={user.avatar}
+          src={
+            user.avatar ||
+            `https://ui-avatars.com/api/?name=${user.username}&background=random`
+          }
           alt="User Avatar"
           width={120}
           height={120}
           className={css.avatar}
+          priority
         />
-
         <form className={css.profileInfo} onSubmit={handleSubmit}>
           <div className={css.usernameWrapper}>
             <label htmlFor="username">Username:</label>
