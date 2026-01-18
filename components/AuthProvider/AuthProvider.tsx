@@ -49,14 +49,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     };
 
     initAuth();
-  }, [
-    pathname,
-    router,
-    setUser,
-    clearIsAuthenticated,
-    isAuthenticated,
-    setIsLoading,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, router, setUser, clearIsAuthenticated]);
 
   if (isLoading) {
     return (

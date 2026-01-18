@@ -14,17 +14,16 @@ interface ApiErrorResponse {
 
 export default function EditProfilePage() {
   const { user, setUser } = useAuthStore();
-  const [username, setUsername] = useState<string>("");
+  const [username, setUsername] = useState<string>(user?.username || "");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (user?.username) {
+    if (user?.username && !username) {
       setUsername(user.username);
     }
-  }, [user]);
-
+  }, [user, username]);
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getMeServer } from "@/lib/api/serverApi";
+import { getMe } from "@/lib/api/serverApi";
 import css from "./ProfilePage.module.css";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProfilePage() {
-  const user = await getMeServer();
+  const user = await getMe();
   if (!user) {
     redirect("/sign-in");
   }

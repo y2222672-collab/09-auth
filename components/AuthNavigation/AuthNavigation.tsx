@@ -1,18 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/store/authStore";
 import { logout } from "@/lib/api/clientApi";
 import css from "./AuthNavigation.module.css";
 
 export const AuthNavigation = () => {
   const { user, isAuthenticated, clearIsAuthenticated } = useAuthStore();
+  const router = useRouter();
+
   const handleLogout = async () => {
     try {
       await logout();
-      clearIsAuthenticated();
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.error("Logout error:", error);
+    } finally {
+      clearIsAuthenticated();
+      router.push("/sign-in");
+      router.refresh();
     }
   };
 
